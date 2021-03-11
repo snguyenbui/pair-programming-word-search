@@ -8,10 +8,27 @@ const wordSearch = (letters, word) => {
      
   let newArray = transpose(letters);
   let reverseArray = [];
+  let diagonalDown = [];
   const horizontalJoin = letters.map(ls => ls.join(''));
   const reverseJoin = reverseArray.map(ls => ls.join(''));
   const verticalJoin = newArray.map(ls => ls.join(''));
 
+  for (let y = 0; y < letters.length; y++) {
+    let builderArray = [[],[]];
+    for (let x = 0; x < letters[y].length; x++) {
+      if (y === 0) {
+        builderArray[0].push(letters[x][x]);
+      } else if (x + y <= letters[y].length) {
+        builderArray[0].push(letters[x][x + y]);
+				builderArray[1].push(letters[x + y][x])
+      } 
+    }
+		diagonalDown.push(builderArray[0]);
+		diagonalDown.push(builderArray[1]);
+  }
+
+	const diagonalJoin = diagonalDown.map(ls => ls.join(''));
+  
   for (let letter of letters) {
     reverseJoin.push(letter.reverse());
   }
@@ -24,6 +41,9 @@ const wordSearch = (letters, word) => {
   for (let f of verticalJoin) {
     if (f.includes(word)) return true;
   }
+	for (let d of diagonalJoin) {
+		if (d.includes(word)) return true;
+	}
   return false;
 };
 
